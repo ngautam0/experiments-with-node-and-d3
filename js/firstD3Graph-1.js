@@ -11,7 +11,7 @@ var svg = d3.select("#visualisation1").append("svg")
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-d3.json("../jsonfiles/graphDataGdpGni.json", function (data){
+d3.json("./jsonfiles/graphDataGdpGni.json", function (data){
     var headers = ["gdpConstant2005USd","gniConstant2005USd"];
     var layers = d3.layout.stack()(headers.map(function(gdpGniRange) {
         return data.map(function(d) {
@@ -100,10 +100,10 @@ d3.json("../jsonfiles/graphDataGdpGni.json", function (data){
         .call(yAxis)
       .append("text")
         .attr("transform", "rotate(-90)")
-        .attr({"x": -150, "y": -70})
+        .attr({"x": -90, "y": -70})
         .attr("dy", ".75em")
         .style("text-anchor", "end")
-        .text("GDP & GNI 2005");
+        .text("GDP & GNI 2005 (in U.S.D)");
 
 
     var legend = svg.selectAll(".legend")

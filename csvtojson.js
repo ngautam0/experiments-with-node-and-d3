@@ -147,7 +147,7 @@
             //  console.log(eachLine[0] +"    =>     Africa");
           }
           else if (america.indexOf(eachLine[0])>-1) {
-            for (var x=0,year=1960,y=4;year<=2015;year++,y++,x++) {
+            for (var x=0,year=1960,y=4;year<2015;year++,y++,x++) {
               if (eachLine[y] !=='') {
                  aggregatedGdpForAmerica[x]=parseFloat(Number(aggregatedGdpForAmerica[x])) + parseFloat(Number(eachLine[y]));
                }
@@ -155,7 +155,7 @@
             //  console.log(eachLine[0] +"    =>     America");
           }
           else if (asia.indexOf(eachLine[0])>-1) {
-            for (var x=0,year=1960,y=4;year<=2015;year++,y++,x++) {
+            for (var x=0,year=1960,y=4;year<2015;year++,y++,x++) {
               // console.log(eachLine[y]);
               if (eachLine[y] !=='') {
                  aggregatedGdpForAsia[x]=parseFloat(Number(aggregatedGdpForAsia[x])) + parseFloat(Number(eachLine[y]));
@@ -167,7 +167,7 @@
           else if (europe.indexOf(eachLine[0])>-1) {
             // console.log(eachLine[y]);
 
-            for (var x=0,year=1960,y=4;year<=2015;year++,y++,x++) {
+            for (var x=0,year=1960,y=4;year<2015;year++,y++,x++) {
               if (eachLine[y] !=='') {
                  aggregatedGdpForEurope[x]=parseFloat(Number(aggregatedGdpForEurope[x])) + parseFloat(Number(eachLine[y]));
                }
@@ -177,7 +177,7 @@
           else if (oceania.indexOf(eachLine[0])>-1) {
             // console.log(eachLine[y]);
 
-            for (var x=0,year=1960,y=4;year<=2015;year++,y++,x++) {
+            for (var x=0,year=1960,y=4;year<2015;year++,y++,x++) {
               if (eachLine[y] !=='') {
                  aggregatedGdpForOceania[x]=parseFloat(Number(aggregatedGdpForOceania[x])) + parseFloat(Number(eachLine[y]));
                }
@@ -209,7 +209,7 @@
       // console.log(aggregatedGdpForOceania);
       // console.log("aggregated data");
 
-      for (var x=0,year=1960;year<=2015;year++,x++) {
+      for (var x=0,year=1960;year<2015;year++,x++) {
         graphDataForAsia[x]=new graphDataForAsiaJson(year,aggregatedGdpForAsia[x]);
         graphDataForAmerica[x]=new graphDataForAmericaJson(year,aggregatedGdpForAmerica[x]);
         graphDataForAfrica[x]=new graphDataForAfricaJson(year,aggregatedGdpForAfrica[x]);

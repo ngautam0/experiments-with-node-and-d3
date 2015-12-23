@@ -1,10 +1,10 @@
 (function InitChart() {
 
-var jsonFiles=["../jsonfiles/graphDataForAsia.json",
-              "../jsonfiles/graphDataForAfrica.json",
-              "../jsonfiles/graphDataForAmerica.json",
-              "../jsonfiles/graphDataForOcenia.json",
-              "../jsonfiles/graphDataForEurope.json"
+var jsonFiles=["./jsonfiles/graphDataForAsia.json",
+              "./jsonfiles/graphDataForAfrica.json",
+              "./jsonfiles/graphDataForAmerica.json",
+              "./jsonfiles/graphDataForOcenia.json",
+              "./jsonfiles/graphDataForEurope.json"
             ];
 
 var colors=['#4747d1', '#e600e5', '#800000', '#00e64c', 'black'];
@@ -19,26 +19,6 @@ var gdpPerCapita=[];
 var minX,maxX,minY,maxY;
 
     d3.json(jsonFiles[jsonFiles.length-1], function (data){
-      for (var i = 0; i < data.length; i++) {
-        years[i]=data[i].year;
-      }
-
-      minX = d3.min(years);
-      maxX = d3.max(years);
-
-      for (var i = 0; i < data.length; i++) {
-        gdpPerCapita[i]=data[i].gdpPerCapita;
-      }
-          minY = d3.min(gdpPerCapita);
-          maxY = d3.max(gdpPerCapita);
-
-          console.log(minX);
-          console.log(minY);
-          console.log(maxX);
-          console.log(maxY);
-
-
-    //////////////////////////
 
     var vis = d3.select("#visualisation"),
         WIDTH = 2200,
@@ -49,12 +29,16 @@ var minX,maxX,minY,maxY;
             bottom: 20,
             left: 80
         },
-        xScale = d3.scale.linear().range([MARGINS.left, WIDTH - MARGINS.right]).domain([minX,maxX]),
-        yScale = d3.scale.linear().range([HEIGHT - MARGINS.top, MARGINS.bottom]).domain([minY, maxY ]),
+        xScale = d3.scale.linear().range([MARGINS.left, WIDTH - MARGINS.right]),
+          yScale = d3.scale.linear().range([HEIGHT - MARGINS.top, MARGINS.bottom]);
+
+        xScale.domain(d3.extent(data, function(d) { return d.year; }));
+        yScale.domain([0, d3.max(data, function(d) { return d.gdpPerCapita; })]);
 
         xAxis = d3.svg.axis()
         .scale(xScale)
-        .ticks(13)
+        .ticks(38)
+        .tickFormat(d3.format("d"))
 
         yAxis = d3.svg.axis()
         .scale(yScale)
@@ -66,6 +50,8 @@ var minX,maxX,minY,maxY;
         .attr("class", "x axis")
         .attr("transform", "translate(0," + (HEIGHT - MARGINS.bottom) + ")")
         .call(xAxis);
+
+
     vis.append("svg:g")
         .attr("class", "y axis")
         .attr("transform", "translate(" + (MARGINS.left) + ",0)")
@@ -85,9 +71,11 @@ var minX,maxX,minY,maxY;
 
     var lineGen = d3.svg.line()
         .x(function(d) {
+          // if(d.gdpPerCapita!=0)
             return xScale(d.year);
         })
         .y(function(d) {
+          // if(d.gdpPerCapita!=0)
             return yScale(d.gdpPerCapita);
         })
         .interpolate("cardinal");

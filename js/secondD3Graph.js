@@ -1,25 +1,10 @@
 (function (){
 
-d3.json("../jsonfiles/graphDataIndGdp.json", function (data) {
+d3.json("./jsonfiles/graphDataIndGdp.json", function (data) {
 
-var minX,minY;
-var maxX,maxY;
-var years=[];
-var gdpGrowthAnnual=[];
+
 var headers=['year','gdpGrowthAnnual']
 
-  for (var i = 0; i < data.length; i++) {
-    years[i]=data[i].year;
-  }
-
-  minX = d3.min(years);
-  maxX = d3.max(years);
-
-  for (var i = 0; i < data.length; i++) {
-    gdpGrowthAnnual[i]=data[i].gdpGrowthAnnual;
-  }
-      minY = d3.min(gdpGrowthAnnual);
-      maxY = d3.max(gdpGrowthAnnual);
 
 
     var vis = d3.select("#visualisation"),
@@ -31,13 +16,17 @@ var headers=['year','gdpGrowthAnnual']
         bottom: 50,
         left: 50
     },
-    xScale = d3.scale.linear().range([MARGINS.left, WIDTH - MARGINS.right]).domain([minX-2,maxX]),
-    yScale = d3.scale.linear().range([HEIGHT - MARGINS.top, MARGINS.bottom]).domain([minY,maxY]),
+  xScale = d3.scale.linear().range([MARGINS.left, WIDTH - MARGINS.right]),
+    yScale = d3.scale.linear().range([HEIGHT - MARGINS.top, MARGINS.bottom]),
 
-    xAxis = d3.svg.axis().scale(xScale).ticks(20);
+    xAxis = d3.svg.axis().scale(xScale).ticks(20).tickFormat(d3.format("d"));
 
     yAxis = d3.svg.axis().scale(yScale).ticks(15)
     .orient("left") ;
+
+    xScale.domain(d3.extent(data, function(d) { return d.year; }));
+    yScale.domain([d3.min(data, function(d) { return d.gdpGrowthAnnual; }), d3.max(data, function(d) { return d.gdpGrowthAnnual; })]);
+
 
 
     vis.append("text")      // text label for the x axis
@@ -73,7 +62,7 @@ var headers=['year','gdpGrowthAnnual']
   .offset([-10, 0])
   .html(function(d) {
     return "YEAR : " + d.year + "</span> <br/>" +
-    "GDP : " + parseFloat(d.gdpGrowthAnnual).toFixed(3) + "</span>";
+    "GDP : " + parseFloat(d.gdpGrowthAnnual).toFixed(2) + " % "+"</span>";
   })
 
 vis.call(tip);
@@ -94,6 +83,13 @@ vis.call(tip);
   .attr('d', lineGen(data))
   .attr('stroke', 'green')
   .attr('stroke-width', 2);
+
+  vis.append("svg:line")
+                          .attr("x1", MARGINS.left)
+                          .attr("x2", WIDTH)
+                          .attr("y1",315 )
+                          .attr("y2", 315)
+                          .style("stroke", "red");
 
 
   vis.selectAll("dot")
